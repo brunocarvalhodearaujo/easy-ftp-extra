@@ -2,6 +2,8 @@ const EasyFTP = require('easy-ftp')
 
 /**
  * @typedef {{ name: string, type: string, time: number, size: string, owner: string, group: string, userPermissions: { read: boolean, write: boolean, exec: boolean }, groupPermissions: { read: boolean, write: boolean, exec: boolean }, otherPermissions: { read: boolean, write: boolean, exec: boolean }, date: Date }} File
+ *
+ * Manage ftp connection in nodejs
  */
 module.exports = class FTP {
   /**
@@ -12,6 +14,8 @@ module.exports = class FTP {
   }
 
   /**
+   * go to folder
+   *
    * @param {string} path
    * @returns {Promise<string>}
    */
@@ -25,6 +29,8 @@ module.exports = class FTP {
   }
 
   /**
+   * remove file from ftp
+   *
    * @param {string} filename
    */
   rm (filename) {
@@ -37,6 +43,8 @@ module.exports = class FTP {
   }
 
   /**
+   * create folder in remote ftp
+   *
    * @param {string} directory
    * @returns {Promise<boolean>}
    */
@@ -50,6 +58,8 @@ module.exports = class FTP {
   }
 
   /**
+   * move files between folders
+   *
    * @param {string} currentPath
    * @param {string} newPath
    * @returns {Promise<string>}
@@ -64,12 +74,15 @@ module.exports = class FTP {
   }
 
   /**
+   * list files in current directory
+   *
    * @param {string} directory
+   * @param {boolean} showHiddenFiles
    * @returns {Promise<File[]>}
    */
-  ls (directory) {
+  ls (directory, showHiddenFiles = false) {
     return new Promise((resolve, reject) => {
-      this.connection.ls(directory, (error, list) => {
+      this.connection[ showHiddenFiles ? 'lsAll' : 'ls' ](directory, (error, list) => {
         if (error) reject(error)
         else resolve(list)
       })
@@ -77,6 +90,8 @@ module.exports = class FTP {
   }
 
   /**
+   * get current path location
+   *
    * @returns {Promise<string>}
    */
   pwd () {
@@ -88,6 +103,12 @@ module.exports = class FTP {
     })
   }
 
+  /**
+   * check if file or folder exist in ftp
+   *
+   * @param {string} filename
+   * @returns {Promise<boolean>}
+   */
   exist (filename) {
     return new Promise((resolve, reject) => {
       this.connection.exist(filename, resolve)
@@ -95,6 +116,7 @@ module.exports = class FTP {
   }
 
   /**
+   * upload file to ftp
    *
    * @param {string|string[]} local
    * @param {string} remote
@@ -109,6 +131,7 @@ module.exports = class FTP {
   }
 
   /**
+   * download file from ftp
    *
    * @param {string|string[]} local
    * @param {string} remote
@@ -120,5 +143,12 @@ module.exports = class FTP {
         else resolve(true)
       })
     })
+  }
+
+  /**
+   * end ftp connection
+   */
+  close () {
+    this.connection.close()
   }
 }
