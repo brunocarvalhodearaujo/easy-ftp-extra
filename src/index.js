@@ -7,10 +7,19 @@ const EasyFTP = require('easy-ftp')
  */
 module.exports = class FTP {
   /**
+   * connect into remote ftp
+   *
    * @param {{ host: string, port: number, username: string, password: string }} config
    */
-  constructor (config) {
+  connect (config) {
     this.connection = new EasyFTP(config)
+  }
+
+  /**
+   * close ftp connection
+   */
+  disconnect () {
+    this.connection.close()
   }
 
   /**
@@ -143,12 +152,5 @@ module.exports = class FTP {
         else resolve(true)
       })
     })
-  }
-
-  /**
-   * end ftp connection
-   */
-  close () {
-    this.connection.close()
   }
 }
