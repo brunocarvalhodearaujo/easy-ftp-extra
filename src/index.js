@@ -153,4 +153,21 @@ module.exports = class FTP {
       })
     })
   }
+
+  /**
+   * event manager of connection
+   * open (< FTPClient >client) - Emitted when connection and authentication were sucessful.
+   * close - Emitted when the connection has fully closed
+   * error(< Error >err) - Emitted when the connection has fully closed
+   * upload(< string >uploadedRemotePath) - Emitted when file or directory uploaded
+   * uploading(< object >data) - (sftp only) Emitted when file was transferred
+   * download(< string >downloadedLocalPath) - Emitted when file or directory downloaded
+   * downloading(< object >data) - (sftp only) Emitted when file was transferred.
+   *
+   * @param {string} event
+   * @param {Function} callback
+   */
+  on (event, callback) {
+    this.connection.on(event, callback)
+  }
 }
