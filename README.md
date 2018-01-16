@@ -1,7 +1,4 @@
-EasyFTP
-=======
-
-this library is an copy of [easy-ftp](https://github.com/humy2833/easy-ftp) but support promises
+this project is an bridge for [easy-ftp](https://github.com/humy2833/easy-ftp) supporting use of promises
 
 ## Install
 
