@@ -142,14 +142,14 @@ module.exports = class FTP {
   /**
    * download file from ftp
    *
-   * @param {string|string[]} local
    * @param {string} remote
+   * @param {string|string[]} local
    */
-  download (local, remote) {
+  download (remote, local) {
     return new Promise((resolve, reject) => {
-      this.connection.download(local, remote, (error) => {
+      this.connection.download(remote, local, (error, data) => {
         if (error) reject(error)
-        else resolve(true)
+        else resolve(data)
       })
     })
   }
