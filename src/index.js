@@ -97,7 +97,7 @@ module.exports = class FTP {
         } else {
           showHiddenFiles
             ? resolve(list)
-            : resolve(list.filter(file => (/(\/|^)\.[^\/\.]/g).test(file.name)))
+            : resolve(list.filter(file => !(/(\/|^)\.[^\/\.]/g).test(file.name)))
         }
       })
     })
