@@ -89,11 +89,16 @@ module.exports = class FTP {
    * @param {boolean} showHiddenFiles
    * @returns {Promise<File[]>}
    */
-  ls (directory, showHiddenFiles = false) {
+  ls (directory, showHiddenFiles = true) {
     return new Promise((resolve, reject) => {
-      this.connection[ showHiddenFiles ? 'lsAll' : 'ls' ](directory, (error, list) => {
-        if (error) reject(error)
-        else resolve(list)
+      this.connection.ls(directory, (error, list) => {
+        if (error) {
+          reject(error)
+        } else {
+          showHiddenFiles
+            ? resolve(list)
+            : resolve(list.filter(file => (/(\/|^)\.[^\/\.]/g).test(file.name)))
+        }
       })
     })
   }
